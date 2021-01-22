@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #CCFFCC;
+}
+
+.hall {
+    position: relative;
+    top: 15%;
+    left: 16.5%;
+    width: 70%;
+    background: black;
+    border-radius: 10px;
+
+}
+
+.seatsFree {
+    position: relative;
+    border-radius: 10px;
+    padding: 10px;
+    float: left;
+    background: #00FF00;
+    margin: 10px;
+    overflow: hidden;
+    width: 5%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.seatsFree:before {
+    content: "";
+    padding-top: 100%;
+    float: left;
+}
+
+.seatsSold {
+    position: relative;
+    border-radius: 10px;
+    padding: 10px;
+    float: left;
+    background: #FF3300;
+    margin: 10px;
+    overflow: hidden;
+    width: 5%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.seatsSold:before {
+    content: "";
+    padding-top: 100%;
+    float: left;
+}
+
+
+.seatSelect {
+    position: relative;
+    border-radius: 10px;
+    padding: 10px;
+    float: left;
+    background: #0000FF;
+    margin: 10px;
+    overflow: hidden;
+    width: 5%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.seatSelect:before {
+    content: "";
+    padding-top: 100%;
+    float: left;
+}
+
+#left {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    width: 74%;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#right {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    width: 20%;
+    padding: 10px;
+    background: linear-gradient(180deg, #FF99CC, #9999FF);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#divPay {
+    position: relative;
+    top: 7%;
+    left: 3%;
+    bottom: 10%;
+    width: 87%;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#divScreen {
+    position: relative;
+    top: 20%;
+    left: 15%;
+    width: 70%;
+    background-color: #6699FF;
+}
+
+button {
+    border-radius: 5px;
+    padding: 5px;
+    width: 70%;
+    background-color: #99FFCC;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input {
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    border: none;
+}
