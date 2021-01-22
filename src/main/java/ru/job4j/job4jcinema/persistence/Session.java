@@ -32,8 +32,6 @@ public class Session {
         return hallId;
     }
 
-
-
     public void setDataStart(LocalDateTime dataStart) {
         this.dataStart = dataStart;
     }
@@ -46,7 +44,6 @@ public class Session {
     public String getMovieTitle() {
         return movieTitle;
     }
-
 
     @Override
     public boolean equals(Object o) {

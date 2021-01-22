@@ -32,21 +32,17 @@ public class Hall {
         return title;
     }
 
-
     public int getNumberOfPlaces() {
         return numberOfPlaces;
     }
-
 
     public int getNumberOfRows() {
         return numberOfRows;
     }
 
-
     public int getCapacity() {
         return capacity;
     }
-
 
     @Override
     public boolean equals(Object o) {

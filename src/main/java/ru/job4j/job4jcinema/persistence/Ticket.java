@@ -36,26 +36,21 @@ public class Ticket {
         this.id = id;
     }
 
-
     public int getSessionId() {
         return sessionId;
     }
-
 
     public int getRow() {
         return row;
     }
 
-
     public int getPlace() {
         return place;
     }
 
-
     public void setStatus(String status) {
         this.status = status;
     }
-
 
     @Override
     public boolean equals(Object o) {
