@@ -44,8 +44,16 @@ public class Ticket {
         return row;
     }
 
+    public void setRow(int row) {
+        this.row = row;
+    }
+
     public int getPlace() {
         return place;
+    }
+
+    public void setPlace(int place) {
+        this.place = place;
     }
 
     public void setStatus(String status) {

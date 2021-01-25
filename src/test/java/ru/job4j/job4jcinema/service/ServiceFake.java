@@ -5,7 +5,9 @@ import ru.job4j.job4jcinema.persistence.Session;
 import ru.job4j.job4jcinema.persistence.Ticket;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -73,8 +75,7 @@ public class ServiceFake implements Service {
     }
 
     @Override
-    public String[] getPurchasedSeats(int sessionId, String statusTicket) {
-
-        return new String[0];
+    public List<Ticket> getPurchasedSeats(int sessionId, String statusTicket) {
+        return new ArrayList<>();
     }
 }

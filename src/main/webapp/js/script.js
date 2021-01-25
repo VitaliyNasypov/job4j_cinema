@@ -5,23 +5,25 @@ function addHall(json) {
     let arrayElem = json;
     let countRow = 1;
     let countPlace = 0;
-    document.getElementById('nameHall').innerText = '  Hall: ' + arrayElem[0];
+    console.log(arrayElem[0]);
+    document.getElementById('nameHall').innerText = '  Hall: ' + arrayElem[0].title;
     if (document.getElementById('1.1') === null) {
-        for (let i = 0; i < arrayElem[1]; i++) {
+        for (let i = 0; i < arrayElem[0].capacity; i++) {
             countPlace++;
             let div = document.createElement('div');
             div.className = "seatsFree";
             div.id = countRow + '.' + countPlace;
             document.querySelector('#hall').append(div);
-            if (countPlace === Number(arrayElem[3])) {
+            if (countPlace === Number(arrayElem[0].numberOfPlaces)) {
                 countRow++;
                 countPlace = 0;
             }
         }
     }
     arrayElem.forEach(function (item, index) {
-        if (index > 3) {
-            document.getElementById(String(item)).setAttribute('class', 'seatsSold');
+        if (index > 0) {
+            document.getElementById(String(item.row + "." + item.place))
+                .setAttribute('class', 'seatsSold');
         }
     });
 }

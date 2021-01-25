@@ -4,12 +4,15 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.job4jcinema.persistence.Hall;
+import ru.job4j.job4jcinema.persistence.Ticket;
 
 import javax.sql.rowset.FilteredRowSet;
 import javax.sql.rowset.RowSetProvider;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class ServicePsql implements Service {
@@ -48,14 +51,11 @@ public class ServicePsql implements Service {
 
     @Override
     public boolean buyTicket(int row, int place, int sessionId, String nameUser, String phoneUser) {
-        boolean result = false;
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
                      .prepareStatement("INSERT INTO TICKETS (DATA_OF_SALE, SESSION_ID, ROW, PLACE, "
-                             + "PRICE,STATUS, NAME_USER, PHONE_USER) "
-                             + "SELECT ?,?,?,?,?,?,?,? WHERE NOT EXISTS "
-                             + "(SELECT ID FROM TICKETS WHERE SESSION_ID=? AND ROW = ? "
-                             + "AND PLACE = ?);")) {
+                             + "PRICE, STATUS, NAME_USER, PHONE_USER) "
+                             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);")) {
             preparedStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setInt(2, sessionId);
             preparedStatement.setInt(3, row);
@@ -64,14 +64,12 @@ public class ServicePsql implements Service {
             preparedStatement.setString(6, "Sold");
             preparedStatement.setString(7, nameUser);
             preparedStatement.setString(8, phoneUser);
-            preparedStatement.setInt(9, sessionId);
-            preparedStatement.setInt(10, row);
-            preparedStatement.setInt(11, place);
-            result = preparedStatement.executeUpdate() == 1;
+            preparedStatement.execute();
+            return true;
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
+            return false;
         }
-        return result;
     }
 
     public Hall getHall(int sessionId) {
@@ -79,16 +77,15 @@ public class ServicePsql implements Service {
         try (Connection connection = pool.getConnection();
              FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("select * from halls "
-                             + "where id =(select hall_id from sessions "
-                             + "where id=?);")) {
+                     .prepareStatement("select * from HALLS JOIN SESSIONS "
+                             + "ON (HALLS.id = hall_id) where SESSIONS.id = ?;")) {
             preparedStatement.setInt(1, sessionId);
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 filteredRowSet.populate(resultSet);
             }
             if (filteredRowSet.next()) {
-                hall = new Hall(filteredRowSet.getInt("ID"),
+                hall = new Hall(filteredRowSet.getInt(1),
                         filteredRowSet.getString("TITLE"),
                         filteredRowSet.getInt("NUMBER_OF_PLACES"),
                         filteredRowSet.getInt("NUMBER_OF_ROWS"),
@@ -101,8 +98,8 @@ public class ServicePsql implements Service {
     }
 
     @Override
-    public String[] getPurchasedSeats(int sessionId, String statusTicket) {
-        String[] purchasedSeats = new String[0];
+    public List<Ticket> getPurchasedSeats(int sessionId, String statusTicket) {
+        List<Ticket> ticketList = new ArrayList<>();
         try (Connection connection = pool.getConnection();
              FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
              PreparedStatement preparedStatement = connection
@@ -113,17 +110,17 @@ public class ServicePsql implements Service {
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 filteredRowSet.populate(resultSet);
-                purchasedSeats = new String[filteredRowSet.size()];
+                System.out.println(filteredRowSet.size());
             }
-            for (int i = 0; i < purchasedSeats.length; i++) {
-                if (filteredRowSet.next()) {
-                    purchasedSeats[i] = filteredRowSet.getInt("ROW")
-                            + "." + filteredRowSet.getInt("PLACE");
-                }
+            while (filteredRowSet.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setRow(filteredRowSet.getInt("ROW"));
+                ticket.setPlace(filteredRowSet.getInt("PLACE"));
+                ticketList.add(ticket);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return purchasedSeats;
+        return ticketList;
     }
 }

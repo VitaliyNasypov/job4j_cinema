@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ru.job4j.job4jcinema.persistence.Hall;
+import ru.job4j.job4jcinema.persistence.Ticket;
 import ru.job4j.job4jcinema.service.Service;
 import ru.job4j.job4jcinema.service.ServicePsql;
 
@@ -15,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @WebServlet("/halls")
 public class HallServlet extends HttpServlet {
@@ -23,22 +27,20 @@ public class HallServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
         String inputJson = br.readLine();
-        JsonElement jsonParser = JsonParser.parseString(inputJson);
-        JsonObject jsonObject = jsonParser.getAsJsonObject();
+        JsonElement jsonElement = JsonParser.parseString(inputJson);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
         String sessionId = jsonObject.get("sessionId").getAsString();
         Service service = ServicePsql.instOf();
         Hall hall = service.getHall(Integer.parseInt(sessionId));
-        String[] purchasedSeats = service.getPurchasedSeats(Integer.parseInt(sessionId), "Sold");
-        String[] result = new String[4 + purchasedSeats.length];
-        result[0] = hall.getTitle();
-        result[1] = String.valueOf(hall.getCapacity());
-        result[2] = String.valueOf(hall.getNumberOfRows());
-        result[3] = String.valueOf(hall.getNumberOfPlaces());
-        System.arraycopy(purchasedSeats, 0, result, 4, purchasedSeats.length);
-        Gson gson = new Gson();
+        List<Ticket> ticketList = service.getPurchasedSeats(Integer.parseInt(sessionId), "Sold");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
-        resp.getWriter().print(gson.toJson(result));
+        Collection collection = new ArrayList();
+        collection.add(hall);
+        for (Ticket ticket : ticketList) {
+            collection.add(ticket);
+        }
+        resp.getWriter().print(new Gson().toJson(collection));
         resp.getWriter().flush();
     }
 }
