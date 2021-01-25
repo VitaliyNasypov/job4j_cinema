@@ -110,7 +110,6 @@ public class ServicePsql implements Service {
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 filteredRowSet.populate(resultSet);
-                System.out.println(filteredRowSet.size());
             }
             while (filteredRowSet.next()) {
                 Ticket ticket = new Ticket();

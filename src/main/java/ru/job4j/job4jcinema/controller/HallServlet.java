@@ -9,6 +9,7 @@ import ru.job4j.job4jcinema.persistence.Ticket;
 import ru.job4j.job4jcinema.service.Service;
 import ru.job4j.job4jcinema.service.ServicePsql;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class HallServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        BufferedReader br = req.getReader();
         String inputJson = br.readLine();
         JsonElement jsonElement = JsonParser.parseString(inputJson);
         JsonObject jsonObject = jsonElement.getAsJsonObject();

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class ServiceFake implements Service {
     private static final ServiceFake INST = new ServiceFake();
@@ -49,21 +50,16 @@ public class ServiceFake implements Service {
 
     @Override
     public boolean buyTicket(int row, int place, int sessionId, String nameUser, String phoneUser) {
-        boolean result = true;
-        for (Map.Entry<Integer, Ticket> entry : tickets.entrySet()) {
-            int sessionIdCompare = entry.getValue().getSessionId();
-            int rowCompare = entry.getValue().getRow();
-            int placeCompare = entry.getValue().getPlace();
-            if (row == rowCompare && place == placeCompare && sessionId == sessionIdCompare) {
-                result = false;
-            }
-            if (result) {
-                Ticket ticketAdd = new Ticket(LocalDateTime.now(),
-                        sessionId, row, place, 200, nameUser, phoneUser);
-                ticketAdd.setId(TICKET_ID.incrementAndGet());
-                ticketAdd.setStatus("Sold");
-                tickets.put(ticketAdd.getId(), ticketAdd);
-            }
+        boolean result = tickets.entrySet().stream().filter(v -> row == v.getValue().getRow()
+                && place == v.getValue().getPlace()
+                && sessionId == v.getValue().getSessionId())
+                .collect(Collectors.toList()).size() == 0;
+        if (result) {
+            Ticket ticketAdd = new Ticket(LocalDateTime.now(),
+                    sessionId, row, place, 200, nameUser, phoneUser);
+            ticketAdd.setId(TICKET_ID.incrementAndGet());
+            ticketAdd.setStatus("Sold");
+            tickets.put(ticketAdd.getId(), ticketAdd);
         }
         return result;
     }
@@ -76,6 +72,11 @@ public class ServiceFake implements Service {
 
     @Override
     public List<Ticket> getPurchasedSeats(int sessionId, String statusTicket) {
-        return new ArrayList<>();
+//        List<Ticket> ticketList = new ArrayList<>();
+//        int hallID = sessions.get(sessionId).getHallId();
+//        ticketList = tickets.values().stream().filter(v -> (v.getSessionId() == sessionId
+//                && v.getStatus().equals(statusTicket))).collect(Collectors.toList());
+        return tickets.values().stream().filter(v -> (v.getSessionId() == sessionId
+                && v.getStatus().equals(statusTicket))).collect(Collectors.toList());
     }
 }

@@ -20,7 +20,7 @@ public class PaymentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        BufferedReader br = req.getReader();
         String inputJson = br.readLine();
         JsonElement jsonParser = JsonParser.parseString(inputJson);
         JsonObject jsonObject = jsonParser.getAsJsonObject();
@@ -34,8 +34,7 @@ public class PaymentServlet extends HttpServlet {
                 Integer.parseInt(sessionId), userName, phoneUser);
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
-        Gson gson = new Gson();
-        resp.getWriter().print(gson.toJson(result));
+        resp.getWriter().print(new Gson().toJson(result));
         resp.getWriter().flush();
     }
 }

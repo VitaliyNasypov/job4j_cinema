@@ -5,7 +5,6 @@ function addHall(json) {
     let arrayElem = json;
     let countRow = 1;
     let countPlace = 0;
-    console.log(arrayElem[0]);
     document.getElementById('nameHall').innerText = '  Hall: ' + arrayElem[0].title;
     if (document.getElementById('1.1') === null) {
         for (let i = 0; i < arrayElem[0].capacity; i++) {
