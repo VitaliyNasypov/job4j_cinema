@@ -9,14 +9,12 @@ import ru.job4j.job4jcinema.persistence.Ticket;
 import ru.job4j.job4jcinema.service.Service;
 import ru.job4j.job4jcinema.service.ServicePsql;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
