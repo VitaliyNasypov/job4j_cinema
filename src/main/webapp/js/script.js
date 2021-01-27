@@ -85,14 +85,16 @@ async function submitPay() {
             const json = await response.json();
             if (json) {
                 document.getElementById("selectSeatNumber").innerText = 'Ticket successfully purchased';
-                document.getElementById("selectSeatAmount").innerText = '';
-                document.getElementById('row').setAttribute('value', '0');
-                document.getElementById('place').setAttribute('value', '0');
-                document.getElementById('price').setAttribute('value', '0');
-                document.getElementById('username').setAttribute('value', '');
-                document.getElementById('phone').setAttribute('value', '');
                 await updateHall();
+            } else{
+                document.getElementById("selectSeatNumber").innerText = 'Sorry, the purchase failed';
             }
+            document.getElementById("selectSeatAmount").innerText = '';
+            document.getElementById('row').setAttribute('value', '0');
+            document.getElementById('place').setAttribute('value', '0');
+            document.getElementById('price').setAttribute('value', '0');
+            document.getElementById('username').setAttribute('value', '');
+            document.getElementById('phone').setAttribute('value', '');
         } else {
             console.log("Error HTTP: " + response.status);
         }
