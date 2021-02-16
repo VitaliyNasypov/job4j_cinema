@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/VitaliyNasypov/job4j_cinema.svg?branch=master)](https://travis-ci.com/VitaliyNasypov/job4j_cinema)
 [![codecov](https://codecov.io/gh/VitaliyNasypov/job4j_cinema/branch/master/graph/badge.svg?token=FD1KJ9IO3Z)](https://codecov.io/gh/VitaliyNasypov/job4j_cinema)
 
-Техническое задание: Простой веб-сайт по покупки билетов в кинотеатр.
+Техническое задание: Простой веб-сайт по покупки билетов в кинотеатр с использованием Servlet
 
 Краткое описание проекта:
 - Проект представлен одной веб-страницей. Она поделена на два блока. 
@@ -17,6 +17,7 @@
 
 
 В данном проекте использовались:
+- Java 11
 - Servlet, JSP, JSTL.
 - HTML, CSS, JavaScript, асинхронные запросы с помощью Fetch API.
 - PostgreSQL, Liquibase - все данные хранились в БД. По мере необходимости извлекались и использовались.
